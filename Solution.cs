@@ -28,39 +28,39 @@ namespace Polindrom
         public static bool IsPalindrom(string x)
         {
             x = x.ToLower();
-            string str = "";
-            for (int i = 0; i < x.Length; i++)
+            int j = x.Length - 1;
+            for (int i = 0; i < j; i++)
             {
-                if (x[i] >= 'a' && x[i] <= 'z')
-                    str += x[i];
-            }
-            int len = str.Length;
-            for (int i = 0; i < len / 2; i++)
-            {
-                if (str[i] != str[len - i - 1])
+                if (x[i] < 'a' || x[i] > 'z') continue;
+                if (x[j] < 'a' || x[j] > 'z') { j--; i--; continue; }
+                if (x[i] != x[j])
                 {
+                    Console.WriteLine(x);
+                    Console.WriteLine("no");
                     return false;
                 }
+                else j--;
             }
+            Console.WriteLine(x.Replace(" ", "").ToLower());
+            Console.WriteLine("yes");
             return true;
         }
 
         //Возвращает "обратно" число
         public static int Reverse(int x)
         {
-            string str = Convert.ToString(x);
-            int len = str.Length;
-            string str_1 = "";
-            for (int i = len - 1; i >= 0; i--)
-                if (str[i] != '-' && str[i] != '0')
-                    str_1 += str[i];
-            try
+            int k = (int)Math.Log10(Math.Abs(x)) + 1;
+            int n = 0, n_1 = 0;
+            for (int i = 2; i < k + 1; i++)
             {
-                if (str[0] == '-')
-                    return -Convert.ToInt32(str_1);
-                else return Convert.ToInt32(str_1);
+                n += (x % (int)(Math.Pow(10, i)) /
+                    (int)(Math.Pow(10, i - 1))) * (int)Math.Pow(10, k - i);
             }
-            catch (System.OverflowException) { return -1; }
+            n_1 = n;
+            n += (x % 10) * (int)Math.Pow(10, k - 1);
+            if (n % (Math.Pow(10, k - 1)) != n_1)
+                n = -1;
+            return n;
         }
     }
 }
